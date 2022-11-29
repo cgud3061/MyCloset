@@ -8,6 +8,7 @@ import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
 
 const form = useForm({
     name: '',
+    sex: '',
     email: '',
     password: '',
     password_confirmation: '',
@@ -40,6 +41,25 @@ const submit = () => {
                 />
 
                 <InputError class="mt-2" :message="form.errors.name" />
+            </div>
+            
+            <!-- 性別選択欄を追加 -->
+            <div class="mt-4">
+                <InputLabel for="sex" value="Sex" />
+
+                <select
+                    id="sex"
+                    type="sex"
+                    class="mt-1 block w-full"
+                    v-model="form.sex"
+                    required
+                    autocomplete="sex"
+                >
+                    <option>MALE</option>
+                    <option>FEMALE</option>
+                </select>
+
+                <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
             <div class="mt-4">
