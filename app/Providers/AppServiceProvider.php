@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        \URL::forceScheme('https'); //https化
+        $this->app['request']->server->set('HTTPS','on'); //ペ時ネーション対応
     }
 }
