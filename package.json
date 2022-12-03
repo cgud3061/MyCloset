@@ -18,5 +18,13 @@
         "tailwindcss": "^3.2.1",
         "vite": "^3.0.0",
         "vue": "^3.2.41"
+    },
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "watch": "vite build --watch"
     }
+    "rules": {
+      "no-console": 0
+    },
 }
