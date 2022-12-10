@@ -28,6 +28,8 @@ class ItemRequest extends FormRequest
             'name' => 'required|string|max:30',
             'price' => 'required|integer|between:10,8388600',
             'possessioned' => 'required|boolean',
+            'description' => 'required|string|max:255',
+            'image_url' => 'nullable|string|max:255,'
         ];
     }
 }

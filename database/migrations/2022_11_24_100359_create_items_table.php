@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('type_id')->constrained('types');
             $table->foreignId('brand_id')->constrained('brands');
             $table->string('name', 30);
+            $table->string('description');
             $table->string('image_url')->nullable();
             $table->mediuminteger('price');
             $table->boolean('state')->default(true);

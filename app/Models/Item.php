@@ -9,10 +9,12 @@ use App\Models\Categorie;
 use App\Models\Type;
 use App\Models\Brand;
 use App\Models\Post;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Item extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     
     protected $fillable = [
         'user_id',
@@ -23,6 +25,7 @@ class Item extends Model
         'image_url',
         'price',
         'state',
+        'description'
     ];
         
     public function user()
