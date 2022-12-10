@@ -39,6 +39,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/mycloset', [ItemController::class, 'index'])->name('item.index');
     Route::post('/mycloset', [ItemController::class, 'store'])->name('item.store');
+    Route::put('/mycloset/{item}', [ItemController::class, 'update'])->name('item.update');
+    Route::delete('mycloset/{item}', [ItemController::class, 'delete'])->name('item.delte');
 });
 
 require __DIR__.'/auth.php';

@@ -1,9 +1,5 @@
 {
     "private": true,
-    "scripts": {
-        "dev": "vite",
-        "build": "vite build"
-    },
     "devDependencies": {
         "@inertiajs/inertia": "^0.11.0",
         "@inertiajs/inertia-vue3": "^0.6.0",
@@ -24,7 +20,4 @@
         "build": "vite build",
         "watch": "vite build --watch"
     }
-    "rules": {
-      "no-console": 0
-    },
 }
