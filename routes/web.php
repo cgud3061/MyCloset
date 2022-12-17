@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,15 +33,24 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 Route::middleware('auth')->group(function () {
+    // ログイン中のユーザーが自分のマイページにアクセスした時用のルーティング
     Route::get('/mycloset', [ItemController::class, 'index'])->name('item.index');
+    // ログイン中のユーザーが他の人のマイページにアクセスした時用のルーティング
+    Route::get('/mycloset/{user}', [ItemController::class, 'otherIndex'])->name('item.otherIndex');
     Route::post('/mycloset', [ItemController::class, 'store'])->name('item.store');
     Route::put('/mycloset/{item}', [ItemController::class, 'update'])->name('item.update');
     Route::delete('mycloset/{item}', [ItemController::class, 'delete'])->name('item.delte');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::post('/follow/{followed_user}', [UserController::class, 'follow'])->name('user.follow');
+    Route::get('/followers/{user}', [UserController::class, 'checkFollowers'])->name('user.followers');
+    Route::get('/followees/{user}', [UserController::class, 'checkFollowees'])->name('user.followees');
 });
 
 require __DIR__.'/auth.php';
