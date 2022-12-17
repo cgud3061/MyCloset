@@ -15,11 +15,46 @@ use Cloudinary;
 
 class ItemController extends Controller
 {
-    public function index(Item $item, Type $type, Categorie $categorie, Brand $brand)
+    // ナビゲーションから自分のマイページにアクセスするメソッド
+    public function index(Type $type, Categorie $categorie, Brand $brand)
     {
-        return Inertia::render('Mycloset/Index.1',[
-            'user'=>Auth::user(),
-            'items'=>$item->get(),
+        // ログインしているユーザー本人の情報
+        $user = Auth::user();
+        // ログインしているユーザー本人が登録している洋服の情報
+        $item = $user->items()->get();
+        // ログインしているユーザー本人がフォローされているユーザーの情報
+        $followee = $user->followees();
+        return Inertia::render('Mycloset/Index',[
+            'user'=>$user,
+            'followees'=>$user->countFollowees(),
+            'followers'=>$user->countFollowers(),
+            'items'=>$item,
+            'types'=>$type->get(),
+            'categories'=>$categorie->get(),
+            'brands'=>$brand->get(),
+            ]);
+    }
+    
+    // 投稿から投稿者のマイページにアクセスするメソッド
+    public function otherIndex(User $user, Type $type, Categorie $categorie, Brand $brand) 
+    {
+        // 投稿者の所有アイテムの情報を$itemsに格納
+        $item = $user->items()->get();
+        
+        $otherUser = Auth::user();
+        
+        // 投稿者をフォローしていればTrue
+        $isFollowing = $user->isFollowed($otherUser->id);
+       
+        return Inertia::render('Mycloset/OtherIndex',[
+            // 投稿者のユーザー情報
+            'user'=>$user,
+            // ログインしているユーザー本人の情報
+            'otherUser'=>Auth::user(),
+            'isFollowing'=>$isFollowing,
+            'followees'=>$user->countFollowees(),
+            'followers'=>$user->countFollowers(),
+            'items'=>$item,
             'types'=>$type->get(),
             'categories'=>$categorie->get(),
             'brands'=>$brand->get(),

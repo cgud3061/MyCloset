@@ -72,11 +72,36 @@ class User extends Authenticatable
     
     public function followees() //ユーザーがフォローしている相手の情報を取得
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'follows', 'follower_id', 'followee_id');
     }
 
     public function followers() //ユーザーがフォローされている相手の情報を取得
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'follows', 'followee_id', 'follower_id');
+    }
+    
+    // ユーザーが引数に渡されたユーザーをフォローしていればTureを返す
+    public function isFollowing($user_id)
+    {
+       // exists()でテーブルにレコードが存在しているかをチェック
+       return $this->followees()->where('followee_id', $user_id)->exists();
+    }
+    
+    // ユーザーが引数に渡されたユーザーからフォローされていればTrueを返す
+    public function isFollowed($user_id)
+    {
+       return $this->followers()->where('follower_id', $user_id)->exists();
+    }
+    
+    // フォロー中のユーザー数を取得するメソッド
+    public function countFollowees()
+    {
+        return $this->followees()->count();
+    }
+    
+    // フォロワー数を取得するメソッド
+    public function countFollowers()
+    {
+        return $this->followers()->count();
     }
 }

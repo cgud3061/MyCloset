@@ -13,25 +13,58 @@ const props = defineProps({
 
 const user = usePage().props.value.auth.user;
 
+// プレビュー用のURLを格納
+const previewSrc=ref(user.profile_image_url);
+
 const form = useForm({
+    image: user.profile_image_url,
     name: user.name,
     email: user.email,
+    profile: user.profile,
 });
+
+// プレビュー用のURLを取得
+function uploadFile(event) {
+    form.image = event.target.files[0];
+    console.log(form.image);
+    var fileReader=new FileReader();
+    fileReader.onload=()=>{
+        previewSrc.value=fileReader.result;
+    };
+    fileReader.readAsDataURL(event.target.files[0]);
+};
+
+const submit = () =>{
+    form.post(route('profile.update'));
+};
 </script>
 
 <template>
     <section>
         <header>
-            <h2 class="text-lg font-medium text-gray-900">Profile Information</h2>
-
-            <p class="mt-1 text-sm text-gray-600">
-                Update your account's profile information and email address.
-            </p>
+            <h2 class="text-lg font-medium text-gray-900">プロフィール情報</h2>
         </header>
 
-        <form @submit.prevent="form.patch(route('profile.update'))" class="mt-6 space-y-6">
+        <form @submit.prevent="submit" class="mt-6 space-y-6" enctype="multipart/form-data">
             <div>
-                <InputLabel for="name" value="Name" />
+                <InputLabel for="image" value="プロフィール画像" />
+                <input
+                    id="image"
+                    name="image"
+                    type="file"
+                    class="mt-1"
+                    @change="uploadFile"
+                    autocomplete="photo"
+                />
+              
+                <img :src="previewSrc" class="rounded-full w-32 h-32 m-2">
+
+                
+                <InputError class="mt-2" :message="form.errors.name" />
+            </div>
+            
+            <div>
+                <InputLabel for="name" value="ユーザー名" />
 
                 <TextInput
                     id="name"
@@ -60,10 +93,26 @@ const form = useForm({
 
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
+            
+            <div>
+                <InputLabel for="profile" value="自己紹介文" />
+
+                <TextInput
+                    id="profile"
+                    type="text"
+                    class="mt-1 block w-full"
+                    v-model="form.profile"
+                    required
+                    autofocus
+                    autocomplete="profile"
+                />
+
+                <InputError class="mt-2" :message="form.errors.name" />
+            </div>
 
             <div v-if="props.mustVerifyEmail && user.email_verified_at === null">
                 <p class="text-sm mt-2 text-gray-800">
-                    Your email address is unverified.
+                    入力されたメールアドレスは無効です
                     <Link
                         :href="route('verification.send')"
                         method="post"
@@ -83,10 +132,10 @@ const form = useForm({
             </div>
 
             <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+                <PrimaryButton :disabled="form.processing">保存</PrimaryButton>
 
                 <Transition enter-from-class="opacity-0" leave-to-class="opacity-0" class="transition ease-in-out">
-                    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Saved.</p>
+                    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">保存されました</p>
                 </Transition>
             </div>
         </form>
