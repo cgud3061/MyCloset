@@ -275,7 +275,7 @@ function showOutfits () {
                                             virtual
                                         >
                                             <swiperSlide v-for="(url, index) in form.images" :virtualIndex="index" :key="`slide-${index}`">
-                                                <img :src="url" class="object-contain"/>
+                                                <img :src="url" class="w-full h-full object-cover object-center"/>
                                             </swiperSlide>
                                         </swiper>
                                     </div>

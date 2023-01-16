@@ -37,7 +37,11 @@ const form = reactive({
 // 洋服詳細の表示を制御する
 const showDescription = ref(false);
 
-let selectedItem = ref([]);
+if (hasItems) {
+    let selectedItem = ref(props.items[0]);
+} else {
+    let selectedItem = ref([]);
+}
 
 function openDescription (item) {
     selectedItem.value = item;
@@ -69,7 +73,7 @@ function submit () {
 const showUpdateForm = ref(false);
 
 function openUpdateForm () {
-    console.log(selectedItem.value)
+    showUpdateForm.value = true;
     form.name = selectedItem.value.name;
     form.type_id = selectedItem.value.type.id;
     form.categorie_id = selectedItem.value.categorie.id;
@@ -77,8 +81,7 @@ function openUpdateForm () {
     form.price = selectedItem.value.price;
     form.description = selectedItem.value.description;
     closeDescription();
-    showUpdateForm.value = true;
-};
+}
 
 function closeUpdateForm () {
     showUpdateForm.value = false;
@@ -125,15 +128,6 @@ function showItems () {
 function showOutfits () {
     Inertia.get("/myposts");
 }
-
-
-import { library, icon } from '@fortawesome/fontawesome-svg-core'
-import { faCamera } from '@fortawesome/free-solid-svg-icons'
-
-library.add(faCamera)
-
-const camera = icon({ prefix: 'fas', iconName: 'camera' })
-
 </script>
 
 <template>
