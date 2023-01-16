@@ -21,9 +21,8 @@ class ItemController extends Controller
         // ログインしているユーザー本人の情報
         $user = Auth::user();
         // ログインしているユーザー本人が登録している洋服の情報
-        $item = $user->items()->get();
-        // ログインしているユーザー本人がフォローされているユーザーの情報
-        $followee = $user->followees();
+        $item = Item::where('user_id', $user->id)->with('categorie', 'type', 'brand')->get();
+        
         return Inertia::render('Mycloset/Index',[
             'user'=>$user,
             'followees'=>$user->countFollowees(),
@@ -39,7 +38,7 @@ class ItemController extends Controller
     public function otherIndex(User $user, Type $type, Categorie $categorie, Brand $brand) 
     {
         // 投稿者の所有アイテムの情報を$itemsに格納
-        $item = $user->items()->get();
+        $item = Item::where('user_id', $user->id)->with('categorie', 'type', 'brand')->get();
         
         $otherUser = Auth::user();
         
@@ -75,10 +74,9 @@ class ItemController extends Controller
         return redirect('/mycloset');
     }
     
-    public function update(ItemRequest $request, Item $item)
+    public function update(Request $request, Item $item)
     {
         $input = $request->all();
-        
         // 画像の変更がある場合のみ実行
         if ($request->file != null) {
             $image_url = Cloudinary::upload($request->file->getRealPath())->getSecurePath();

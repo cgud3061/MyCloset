@@ -5,6 +5,12 @@ import { Head } from '@inertiajs/inertia-vue3';
 import { Inertia } from "@inertiajs/inertia";
 import { ref, reactive, computed, onMounted } from 'vue';
 
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Navigation, Pagination, Virtual } from 'swiper';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
 // IteμControllerから受け取ったデータ
 const props = defineProps ({
     user: Array,
@@ -12,33 +18,32 @@ const props = defineProps ({
     isFollowing: Boolean,
     followees: Number,
     followers: Number,
-    items: Array,
-    types: Array,
-    categories: Array,
-    brands: Array,
+    posts: Array,
 });
 
-// 投稿者をフォローしていればTrue
-let Following = ref(props.isFollowing);
+// itemsテーブルに洋服を一つでも追加してればtrue
+const hasPosts = props.posts.length != 0;
 
-let followers = ref(props.followers);
+// コーディネートの詳細表示
+const urls = ref(null);
 
-// itemsテーブルに一つでも洋服を追加していればtrue
-const hasItems = props.items.length != 0;
+const selectedPost = ref(props.posts[0]);
 
-// 洋服詳細の表示を制御する
 const showDescription = ref(false);
 
-let selectedItem = ref(props.items[0]);
-
-function openDescription (item) {
+function openDescription (post) {
+    selectedPost.value = post;
+    urls.value = selectedPost.value.images;
     showDescription.value = true;
-    selectedItem.value = item;
 };
 
 function closeDescription () {
     showDescription.value = false;
 };
+
+let Following = ref(props.isFollowing);
+
+let followers = ref(props.followers);
 
 function follow () {
     Following.value = !Following.value;
@@ -94,8 +99,10 @@ function showOutfits () {
                             </div>
                         </div>
                         <div class="flex justify-start items-start h-1/5">
-                            <button @click="checkFollowers" type="submit" class="m-1 text-sm font-medium text-glay-300">フォロワー<span class="mx-1">{{ followers }}</span></button>
-                            <button @click="checkFollowees" type="submit" class="m-1 text-sm font-medium text-glay-300">フォロー中<span class="mx-1">{{ followees }}</span></button>
+                            <button @click="checkFollowers" type="submit" class="m-1 text-sm font-medium text-gray-500">フォロワー<span class="mx-1">{{ followers }}</span></button>
+                            <button @click="checkFollowees" type="submit" class="m-1 text-sm font-medium text-gray-500">フォロー中<span class="mx-1">{{ followees }}</span></button>
+                        </div>
+                        <div class="absolute flex  bottom-0 right-0 justify-end mx-auto my-2 w-full h-1/5">
                         </div>
                         <h1 class="text-base m-2">{{ user.profile }}</h1>
                     </div>
@@ -103,20 +110,20 @@ function showOutfits () {
                 
                 <div class="flex relative justify-start items-center  mt-5 h-11 w-full border border-t-0 border-r-0 border-l-0 border-b-2 border-gray-200">
                     <div class="flex justify-center items-center">
-                        <button @click="showItems" class="p-2 text-base font-medium text-gray-500 border boeder-t-2 border-r-2 border-l-2 border-b-0">アイテム</button>
-                        <button @click="showOutfits" class="p-2  text-base font-medium text-gray-500">コーデ</button>
+                        <button @click="showItems" class="p-2 text-base font-medium text-gray-500">アイテム</button>
+                        <button @click="showOutfits" class="p-2  text-base font-medium text-gray-500 border boeder-t-2 border-r-2 border-l-2 border-b-0">コーデ</button>
                     </div>
                 </div>
-
-                <!-- 洋服一覧部分 -->
-                <!-- itemsテーブルに洋服を登録しているかどうかで条件分岐 -->
-                <div v-if="hasItems">
+                
+                <!-- 投稿一覧部分 -->
+                <!-- postsテーブルに洋服を登録しているかどうかで条件分岐 -->
+                <div v-if="hasPosts">
                     <div class="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
                         <!-- 洋服要素 -->
-                        <div @click="openDescription(item)" v-for="(item, index) in items" :key="item.name" class="group relative">
+                        <div @click="openDescription(post)" v-for="(post, index) in posts" :key="posts.title" class="group relative">
                             <!-- 写真要素 -->
                             <div class="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none lg:h-80">
-                                <img :src="item.image_url" class="h-full w-full object-cover object-center lg:h-full lg:w-full">
+                                <img :src="post.images[0].image_url" class="h-full w-full object-cover object-center lg:h-full lg:w-full">
                             </div>
                             <!-- 商品名など -->
                             <div class="mt-4 flex justify-between">
@@ -124,12 +131,9 @@ function showOutfits () {
                                     <h3 class="text-xs text-gray-500">
                                         <a href="#">
                                             <span aria-hidden="true" class="absolute inset-0"></span>
-                                            {{ item.name }}
+                                            {{ post.title }}
                                         </a>
                                     </h3>
-                                    <span class="inline mt-1 mr-2 text-sm text-gray-300 text-xs">{{ item.type.name }}</span>
-                                    <span class="inline mt-1 mr-2 text-sm text-gray-300 text-xs">{{ item.categorie.name }}</span>
-                                    <span class="inline mt-1 mr-2 text-sm text-gray-300 text-xs">{{ item.brand.name }}</span>
                                 </div>
                             </div>
                         </div>
@@ -137,17 +141,17 @@ function showOutfits () {
                 </div>
                 <div v-else>
                     <div class="flex justify-center items-center w-full h-4/5">
-                        <div class="w-80 h-80 m-20">
-                            <FontAwesomeIcon class="w-40 h-40 justify-self-center mx-20" icon="shirt"></FontAwesomeIcon>
-                            <h1 class="text-2xl text-black mx-10 w-60 ">アイテムがありません</h1>
+                        <div class="w-96 h-80 m-20">
+                            <FontAwesomeIcon class="w-40 h-40 justify-self-center mx-28" icon="shirt"></FontAwesomeIcon>
+                            <h1 class="text-2xl text-black w-80 mx-8">コーディネートがありません</h1>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         
-        <!-- 洋服詳細モーダル -->
-        <div v-if="hasItems">
+        <div v-if="hasPosts">
+            <!-- 投稿詳細モーダル -->
             <div v-show="showDescription" class="relative z-10" role="dialog" aria-modal="true">
                 <!-- オーバーレイ要素 -->
                 <div class="fixed inset-0 hidden bg-gray-500 bg-opacity-75 transition-opacity md:block"></div>
@@ -169,17 +173,24 @@ function showOutfits () {
                                 </button>
                                 <!-- モーダルの内容 -->
                                 <div class="grid w-full grid-cols-1 items-start gap-y-8 gap-x-6 sm:grid-cols-12 lg:gap-x-8">
+                                    <!-- サムネイル部分 -->
                                     <div class="aspect-w-2 aspect-h-3 overflow-hidden rounded-lg bg-gray-100 sm:col-span-8 lg:col-span-7">
-                                        <img :src="selectedItem.image_url" alt="Two each of gray, white, and black shirts arranged on table." class="h-full w-full object-cover object-center">
+                                        <swiper
+                                            :modules="[Navigation, Pagination, Virtual]"
+                                            navigation
+                                            :pagination="{ clickable: true }"
+                                            virtual
+                                        >
+                                            <swiperSlide v-for="(url, index) in urls" :virtualIndex="index" :key="`slide-${index}`">
+                                                <img :src="url.image_url" class="h-full w-full object-cover object-center"/>
+                                            </swiperSlide>
+                                        </swiper>
                                     </div>
+                                    <!-- フォーム部分 -->
                                     <div class="h-full mb-4 sm:col-span-4 lg:col-span-5">
-                                        <h2 class="text-lg font-bold text-gray-500 sm:pr-12">{{ selectedItem.name }}</h2>
-                                        <p class="mr-2 text-base text-gray-500">種別：{{ selectedItem.type.name }}</p>
-                                        <p class="mr-2 text-base text-gray-500">ブランド名：{{ selectedItem.brand.name }}</p>
-                                        <p class="mr-2 text-base text-gray-500">カテゴリー：{{ selectedItem.categorie.name }}</p>
-                                        <p class="text-base text-gray-500">価格：{{ selectedItem.price }}円</p>
-                                        <h3 class="mt-3 mb-1 text-base text-gray-500">説明：</h3>
-                                        <text class="mb-2 text-sm text-gray-500">{{ selectedItem.description }}</text>
+                                        <h2 class="text-xl font-bold text-gray-600 sm:pr-12">{{ selectedPost.title }}</h2>
+                                        <h2 class="tex-lg font-medium text-gray-500 mt-2">説明</h2>
+                                        <h2 class="text-base text-gray-500 sm:pr-12">{{ selectedPost.body }}</h2>
                                     </div>
                                 </div>
                             </div>

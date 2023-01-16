@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,10 +28,6 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -51,6 +48,17 @@ Route::middleware('auth')->group(function () {
     Route::post('/follow/{followed_user}', [UserController::class, 'follow'])->name('user.follow');
     Route::get('/followers/{user}', [UserController::class, 'checkFollowers'])->name('user.followers');
     Route::get('/followees/{user}', [UserController::class, 'checkFollowees'])->name('user.followees');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/myposts', [PostController::class, 'myPosts'])->name('post.myPosts');
+    Route::get('/myposts/{user}', [PostController::class, 'otherPosts'])->name('post.otherPosts');
+    Route::get('/dashboard/followed', [PostController::class, 'index'])->name('post.index');
+    Route::get('/dashboard', [PostController::class, 'recomend'])->name('dashboard');
+    Route::post('/post/{user}', [PostController::class, 'store'])->name('post.store');
+    Route::put('/post/{post}', [PostController::class, 'update'])->name('post.update');
+    Route::post('post/{favorited_post}/favorites', [PostController::class, 'favorites'])->name('post.favorites');
+    Route::delete('post/{post}', [PostController::class, 'delete'])->name('post.delte');
 });
 
 require __DIR__.'/auth.php';

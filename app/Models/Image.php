@@ -4,16 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
 use App\Models\Post;
 
-class Favorite extends Model
+class Image extends Model
 {
     use HasFactory;
     
     protected $fillable = [
-        'user_id',
         'post_id',
-        'percentage',
+        'image_url',
     ];
+    
+    public function post()
+    {
+        return $this->belongsTo(Post::class);
+    }
 }
