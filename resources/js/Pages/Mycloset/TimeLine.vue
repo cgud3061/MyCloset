@@ -4,7 +4,7 @@ import { Head } from '@inertiajs/inertia-vue3';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { ref, reactive, computed, onMounted } from 'vue';
 import { Inertia } from "@inertiajs/inertia";
-
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation, Pagination, Virtual } from 'swiper';
 import 'swiper/css';
@@ -18,7 +18,7 @@ const props = defineProps ({
     items: Array,
 });
 
-console.log(props.posts)
+console.log(props.pleaseFollow);
 
 const urls = ref(null);
 
@@ -112,41 +112,52 @@ function recomend () {
                 
                 <div class="flex justify-center items-center  h-11 w-full border border-t-0 border-r-0 border-l-0 border-b-2 border-gray-200">
                     <div class="flex justify-center items-center">
-                        <button @click="recomend" class="p-2 text-base font-medium text-gray-500 border boeder-t-2 border-r-2 border-l-2 border-b-0">おすすめ</button>
-                        <button @click="index" class="p-2  text-base font-medium text-gray-500">フォロー中</button>
+                        <button @click="recomend" class="p-2 text-base font-medium text-gray-500">おすすめ</button>
+                        <button @click="index" class="p-2 text-base font-medium text-gray-500 border boeder-t-2 border-r-2 border-l-2 border-b-0">フォロー中</button>
                     </div>
                 </div>
                 
-                <div class="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-                    <!-- 洋服要素 -->
-                    <div v-for="(post, index) in posts" :key="post.name" class="group relative">
-                        <!-- 写真要素 -->
-                        <div class="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none lg:h-80">
-                            <img :src="post.images[0].image_url" class="h-full w-full object-cover object-center lg:h-full lg:w-full">
+                <div v-if="pleaseFollow">
+                    <div class="flex justify-center items-center w-full h-4/5">
+                        <div class="w-80 h-80 m-20">
+                            <FontAwesomeIcon class="w-40 h-40 justify-self-center mx-20" icon="user-plus"></FontAwesomeIcon>
+                            <h1 class="text-2xl text-black mx-7">誰かをフォローしてみる</h1>
+                            <button @click="recomend" class="text-base text-blue-600 mx-24 my-2">おすすめへ移動</button>
                         </div>
-                        <!-- 商品名など -->
-                        <div class="mt-1 flex">
-                            <div class="reactive w-1/4">
-                                <img :src="post.user.profile_image_url" class="absolute z-0 w-10 h-10 rounded-full m-2 ring-2 ring-gray-200">
-                                <button @click="toMyPage(post.user.id)" class="absolute z-10 w-10 h-10 rounded-full m-2 ring-2 ring-gray-200"></button>
+                    </div>
+                </div>
+                <div v-else>
+                    <div class="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+                        <!-- 洋服要素 -->
+                        <div v-for="(post, index) in posts" :key="post.name" class="group relative">
+                            <!-- 写真要素 -->
+                            <div class="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none lg:h-80">
+                                <img :src="post.images[0].image_url" class="h-full w-full object-cover object-center lg:h-full lg:w-full">
                             </div>
-                            <div class="relative w-2/4">
-                                <h2 class="mt-2 text-sm text-gray-600">{{ post.user.name }}</h2>
-                                <h3 class="text-xs text-gray-500">
-                                    <a @click="openDescription(post)">
-                                        <span aria-hidden="true" class="absolute inset-0"></span>
-                                        {{ post.title }}
-                                    </a>
-                                </h3>
-                            </div>
-                            <div class="relative w-1/4">
-                                <div v-if="post.favorited_by_user">
-                                    <img class="absolute z-0 w-5 h-5 m-5" src="https://res.cloudinary.com/dxe6weecx/image/upload/v1673066664/%E3%83%8F%E3%83%BC%E3%83%88%E3%81%AE%E3%83%9E%E3%83%BC%E3%82%AF_f6qjah.png">
+                            <!-- 商品名など -->
+                            <div class="mt-1 flex">
+                                <div class="reactive w-1/4">
+                                    <img :src="post.user.profile_image_url" class="absolute z-0 w-10 h-10 rounded-full m-2">
+                                    <button @click="toMyPage(post.user.id)" class="absolute z-10 w-10 h-10 rounded-full m-2"></button>
                                 </div>
-                                <div v-else>
-                                    <img class="absolute z-0 w-5 h-5 m-5" src="https://res.cloudinary.com/dxe6weecx/image/upload/v1673013731/%E3%83%8F%E3%83%BC%E3%83%88%E3%81%AE%E3%83%9E%E3%83%BC%E3%82%AF2_iw22ho.png">
+                                <div class="relative w-2/4">
+                                    <h2 class="mt-2 text-sm text-gray-600">{{ post.user.name }}</h2>
+                                    <h3 class="text-xs text-gray-500">
+                                        <a @click="openDescription(post)">
+                                            <span aria-hidden="true" class="absolute inset-0"></span>
+                                            {{ post.title }}
+                                        </a>
+                                    </h3>
                                 </div>
-                                <button @click="favorite(post)" class="absolute z-10 w-5 h-5 m-5"></button>
+                                <div class="relative w-1/4">
+                                    <div v-if="post.favorited_by_user">
+                                        <img class="absolute z-0 w-5 h-5 m-5" src="https://res.cloudinary.com/dxe6weecx/image/upload/v1673066664/%E3%83%8F%E3%83%BC%E3%83%88%E3%81%AE%E3%83%9E%E3%83%BC%E3%82%AF_f6qjah.png">
+                                    </div>
+                                    <div v-else>
+                                        <img class="absolute z-0 w-5 h-5 m-5" src="https://res.cloudinary.com/dxe6weecx/image/upload/v1673013731/%E3%83%8F%E3%83%BC%E3%83%88%E3%81%AE%E3%83%9E%E3%83%BC%E3%82%AF2_iw22ho.png">
+                                    </div>
+                                    <button @click="favorite(post)" class="absolute z-10 w-5 h-5 m-5"></button>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -47,18 +47,21 @@ const submit = () =>{
 
         <form @submit.prevent="submit" class="mt-6 space-y-6" enctype="multipart/form-data">
             <div>
-                <InputLabel for="image" value="プロフィール画像" />
-                <input
-                    id="image"
-                    name="image"
-                    type="file"
-                    class="mt-1"
-                    @change="uploadFile"
-                    autocomplete="photo"
-                />
-              
-                <img :src="previewSrc" class="rounded-full w-32 h-32 m-2">
-
+                <div class="flex justify-start items-center">
+                    <InputLabel for="image" value="プロフィール画像" />
+                    <input @change="uploadFile" name="file-upload" type="file" class="block w-80 mx-2 text-sm font-medium text-slate-500
+                        file:mr-4 file:py-2 file:px-4
+                        file:rounded-full file:border-0
+                        file:text-sm file:font-semibold
+                        file:bg-violet-50 file:text-violet-700
+                        hover:file:bg-violet-100
+                    "/>
+                </div>
+                
+                <img v-if="previewSrc != null" :src="previewSrc" class="rounded-full w-32 h-32 m-2 border border-gray-200 border-2">
+                <div v-else class="flex justify-center items-center rounded-full w-32 h-32 m-2 border border-gray-200 border-2">
+                    <FontAwesomeIcon icon="user" class="w-2/3 h-2/3"></FontAwesomeIcon>
+                </div>
                 
                 <InputError class="mt-2" :message="form.errors.name" />
             </div>
