@@ -3,6 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/inertia-vue3';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { Inertia } from "@inertiajs/inertia";
+import { usePage } from '@inertiajs/inertia-vue3';
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 const props = defineProps ({
@@ -15,8 +16,11 @@ function recomend () {
 };
 
 function toMyPage (userId) {
-    console.log(userId);
-    Inertia.get('/mycloset/' + userId);
+    if (userId != usePage().props.value.auth.user.id) {
+        Inertia.get('/mycloset/' + userId);
+    } else {
+        Inertia.get('/mycloset');
+    }
 };
 </script>
 
