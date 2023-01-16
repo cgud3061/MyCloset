@@ -13,6 +13,11 @@ const props = defineProps ({
 function recomend () {
     Inertia.get('/dashboard');
 };
+
+function toMyPage (userId) {
+    console.log(userId);
+    Inertia.get('/mycloset/' + userId);
+};
 </script>
 
 <template>
@@ -40,9 +45,9 @@ function recomend () {
                                     </div>
                                 </div>
                                 <div class="flex-1 pl-1 mr-16">
-                                    <div class="font-medium dark:text-white">
+                                    <a @click="toMyPage(followee.id)" class="font-medium dark:text-white">
                                         {{ followee.name }}
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                         </li>

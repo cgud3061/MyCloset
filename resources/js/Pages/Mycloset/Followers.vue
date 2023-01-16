@@ -8,6 +8,11 @@ const props = defineProps ({
     followers: Array,
 });
 
+function toMyPage (userId) {
+    console.log(userId);
+    Inertia.get('/mycloset/' + userId);
+};
+
 </script>
 
 <template>
@@ -35,9 +40,9 @@ const props = defineProps ({
                                     </div>
                                 </div>
                                 <div class="flex-1 pl-1 mr-16">
-                                    <div class="font-medium dark:text-white">
+                                    <a @click="toMyPage(follower.id)" class="font-medium dark:text-white">
                                         {{ follower.name }}
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                         </li>
