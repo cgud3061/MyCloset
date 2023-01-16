@@ -37,11 +37,11 @@ const form = reactive({
 // 洋服詳細の表示を制御する
 const showDescription = ref(false);
 
+let selectedItem = ref([]);
+
 if (hasItems) {
-    let selectedItem = ref(props.items[0]);
-} else {
-    let selectedItem = ref([]);
-}
+    selectedItem.value = props.items[0];
+};
 
 function openDescription (item) {
     selectedItem.value = item;
