@@ -23,7 +23,19 @@ class TypeSeeder extends Seeder
          ]);
          
          DB::table('types')->insert([
+                'name' => 'ワンピース',
+                'created_at' => new DateTime(),
+                'updated_at' => new DateTime(),
+         ]);
+         
+         DB::table('types')->insert([
                 'name' => 'ボトムス',
+                'created_at' => new DateTime(),
+                'updated_at' => new DateTime(),
+         ]);
+         
+         DB::table('types')->insert([
+                'name' => 'スカート',
                 'created_at' => new DateTime(),
                 'updated_at' => new DateTime(),
          ]);

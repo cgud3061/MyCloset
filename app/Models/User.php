@@ -65,9 +65,9 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);  
     }
     
-    public function favorites()   
+    public function favoritingPosts()   
     {
-        return $this->hasMany(Favorite::class);  
+        return $this->belongsToMany(Post::class, 'favorires', 'user_id', 'post_id');  
     }
     
     public function followees() //ユーザーがフォローしている相手の情報を取得

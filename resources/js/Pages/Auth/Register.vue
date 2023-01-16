@@ -24,12 +24,15 @@ const submit = () => {
 </script>
 
 <template>
+    <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
+        <Link :href="route('login')" class="text-2xl text-white  underline">ログイン</Link>
+    </div>
     <GuestLayout>
         <Head title="Register" />
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="name" value="Name" />
+                <InputLabel for="name" value="ユーザー名" />
 
                 <TextInput
                     id="name"
@@ -46,25 +49,25 @@ const submit = () => {
             
             <!-- 性別選択欄を追加 -->
             <div class="mt-4">
-                <InputLabel for="sex" value="Sex" />
+                <InputLabel for="sex" value="性別" />
 
                 <select
                     id="sex"
                     type="sex"
-                    class="mt-1 block w-full"
+                    class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                     v-model="form.sex"
                     required
                     autocomplete="sex"
                 >
-                    <option>MALE</option>
-                    <option>FEMALE</option>
+                    <option>男性</option>
+                    <option>女性</option>
                 </select>
 
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
             <div class="mt-4">
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email" value="メールアドレス" />
 
                 <TextInput
                     id="email"
@@ -79,7 +82,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                <InputLabel for="password" value="パスワード" />
 
                 <TextInput
                     id="password"
@@ -94,7 +97,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
+                <InputLabel for="password_confirmation" value="確認用パスワード" />
 
                 <TextInput
                     id="password_confirmation"
@@ -113,11 +116,11 @@ const submit = () => {
                     :href="route('login')"
                     class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                    Already registered?
+                    すでに登録済ですか?
                 </Link>
 
                 <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Register
+                    登録
                 </PrimaryButton>
             </div>
         </form>
