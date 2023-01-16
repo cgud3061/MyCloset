@@ -59,6 +59,10 @@ class PostController extends Controller
             $recomended_user_id = array_values($recomended_user_id);
             
             $post = Post::whereIn('user_id', $recomended_user_id)->with('images', 'user')->get();
+            
+            if ($post == null) {
+                $post = Post::where('user_id', '!=', $user->id)->orderBy('created_at', 'DESC')->limit(20)->with('images', 'user')->get();
+            }
         }
         
         $item =$user->items()->get();
