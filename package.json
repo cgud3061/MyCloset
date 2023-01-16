@@ -28,7 +28,5 @@
         "@fortawesome/vue-fontawesome": "^3.0.2",
         "swiper": "^8.4.5",
         "vue-select-image": "^1.9.0"
-        "watch": "vite build --watch",
-        "heroku-postbuild": "npm run build"
     }
 }
