@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('description');
             $table->string('image_url')->nullable();
             $table->mediuminteger('price');
-            $table->boolean('state')->default(true);
+            $table->boolean('state');
             $table->timestamps();
             $table->softDeletes();
         });
