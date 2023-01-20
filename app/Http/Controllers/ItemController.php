@@ -74,7 +74,7 @@ class ItemController extends Controller
         return redirect('/mycloset');
     }
     
-    public function update(Request $request, Item $item)
+    public function update(ItemRequest $request, Item $item)
     {
         $input = $request->all();
         // 画像の変更がある場合のみ実行

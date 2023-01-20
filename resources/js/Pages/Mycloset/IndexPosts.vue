@@ -18,6 +18,7 @@ const props = defineProps ({
     followers: Number,
     items: Array,
     posts: Array,
+    errors: Object,
 });
 
 // itemsテーブルに洋服を一つでも追加してればtrue
@@ -291,16 +292,19 @@ function showOutfits () {
                                         <div class="overflow-hidden sm:rounded-md">
                                             <div class="bg-white px-4 py-5 sm:p-6">
                                                 <div class="">
-                                                    <label for="post_title" class="block text-sm font-medium text-gray-700">タイトル</label>
+                                                    <label for="post_title" class="block my-1 text-sm font-medium text-gray-700">タイトル</label>
+                                                    <div v-if="errors.title" class="my-1 text-xs font-medium text-red-500">タイトルを入力してください</div>
                                                     <input v-model="form.title" type="text" name="street-address" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                                 </div>
                                                 <div class="">
-                                                    <label for="post_body" class="block text-sm mt-2 font-medium text-gray-700">説明</label>
+                                                    <label for="post_body" class="block my-1 text-sm mt-2 font-medium text-gray-700">説明</label>
+                                                    <div v-if="errors.body" class="my-1 text-xs font-medium text-red-500">説明を入力してください</div>
                                                     <input v-model="form.body" type="text" name="street-address" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                                 </div>
                                                 <div class="">
-                                                    <label for="post_title" class="block text-sm mt-2 font-medium text-gray-700">アイテム</label>
-                                                    <label class="text-xs ml-2 font-medium text-gray-600">Shiftキー or Comandキーで複数選択</label>
+                                                    <label for="post_title" class="block my-1 text-sm mt-2 font-medium text-gray-700">アイテム</label>
+                                                    <div v-if="errors.images" class="my-1 text-xs font-medium text-red-500">アイテムを選択してください</div>
+                                                    <label class="my-1 text-xs ml-2 font-medium text-gray-600">Shiftキー or Comandキーで複数選択</label>
                                                     <select v-model="form.images"  multiple name="type" class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
                                                         <option v-for="item in items" :key="item.name" :value="item.image_url">{{ item.name }}</option>
                                                     </select>
@@ -368,14 +372,17 @@ function showOutfits () {
                                             <div class="bg-white px-4 py-5 sm:p-6">
                                                 <div class="">
                                                     <label for="post_title" class="block text-sm font-medium text-gray-700">タイトル</label>
+                                                    <div v-if="errors.title" class="my-1 text-xs font-medium text-red-500">タイトルを入力してください</div>
                                                     <input v-model="form.title" type="text" name="street-address" :value="form.title" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                                 </div>
                                                 <div class="">
                                                     <label for="post_body" class="block text-sm mt-2 font-medium text-gray-700">説明</label>
+                                                    <div v-if="errors.body" class="my-1 text-xs font-medium text-red-500">説明を入力してください</div>
                                                     <input v-model="form.body" type="text" name="street-address" :value="form.body" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                                 </div>
                                                 <div class="">
                                                     <label for="post_title" class="block text-sm mt-2 font-medium text-gray-700">アイテム</label>
+                                                    <div v-if="errors.images" class="my-1 text-xs font-medium text-red-500">アイテムを選択してください</div>
                                                     <label class="text-xs ml-2 font-medium text-gray-600">Shiftキー or Comandキーで複数選択</label>
                                                     <select v-model="form.images"  multiple name="type" class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
                                                         <option v-for="item in items" :key="item.name" :value="item.image_url">{{ item.name }}</option>

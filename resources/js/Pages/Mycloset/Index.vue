@@ -15,9 +15,8 @@ const props = defineProps ({
     types: Array,
     categories: Array,
     brands: Array,
+    errors: Object,
 });
-
-console.log(props.items);
 
 // itemsテーブルに洋服を一つでも追加してればtrue
 const hasItems = props.items.length != 0;
@@ -29,7 +28,7 @@ const form = reactive({
     categorie_id: null,
     brand_id: null,
     price: null,
-    possessioned: null,
+    state: null,
     file: null,
     description: null,
 });
@@ -80,6 +79,11 @@ function openUpdateForm () {
     form.brand_id = selectedItem.value.brand.id;
     form.price = selectedItem.value.price;
     form.description = selectedItem.value.description;
+    if (selectedItem.value.state == 1) {
+        form.state = true;
+    } else {
+        form.state = false;
+    }
     closeDescription();
 }
 
@@ -276,7 +280,7 @@ function showOutfits () {
                                 <div class="bg-white px-4 py-5 sm:p-6">
                                     <div class="">
                                         <div class="">
-                                            <div class="flex justify-start items-center">
+                                            <div class="flex justify-start items-center my-1">
                                                 <label class="block text-sm font-medium text-gray-700">写真</label>
                                                 <input @change="uploadFile" name="file-upload" type="file" class="block w-80 mx-2 text-sm font-medium text-slate-500
                                                     file:mr-4 file:py-2 file:px-4
@@ -286,7 +290,7 @@ function showOutfits () {
                                                     hover:file:bg-violet-100
                                                 "/>
                                             </div>
-                                            
+                                            <div v-if="errors.file" class="my-1 text-xs font-medium text-red-500">写真を選択してください</div>
                                             
                                             <div class="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 ">
                                                 <div v-if="previewSrc != null">
@@ -302,46 +306,53 @@ function showOutfits () {
                                             </div>
                                         </div>
                                         <div class="">
-                                            <label for="product_name" class="block text-sm font-medium text-gray-700">商品名</label>
+                                            <label for="product_name" class="my-1 block text-sm font-medium text-gray-700">商品名</label>
+                                            <div v-if="errors.name" class="my-1 text-xs font-medium text-red-500">商品名を入力してください</div>
                                             <input v-model="form.name" type="text" name="street-address" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                         </div>
                     
                                         <div class="">
-                                            <label for="type" class="block text-sm font-medium text-gray-700">タイプ</label>
+                                            <label for="type" class="block my-1 text-sm font-medium text-gray-700">タイプ</label>
+                                            <div v-if="errors.type_id" class="my-1 text-xs font-medium text-red-500">タイプを選択してください</div>
                                             <select v-model="form.type_id" name="type" class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
                                                 <option v-for="type in types" :key="type.name" :value="type.id">{{ type.name }}</option>
                                             </select>
                                         </div>
                                   
                                         <div class="">
-                                            <label for="categorie" class="block text-sm font-medium text-gray-700">カテゴリー</label>
+                                            <label for="categorie" class="my-1 block text-sm font-medium text-gray-700">カテゴリー</label>
+                                            <div v-if="errors.categorie_id" class="my-1 text-xs font-medium text-red-500">カテゴリーを選択してください</div>
                                             <select v-model="form.categorie_id" name="categorie" class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
                                               <option v-for="categorie in categories" :key="categorie.name" :value="categorie.id">{{ categorie.name }}</option>
                                             </select>
                                         </div>
                                   
                                         <div class="">
-                                            <label for="brand" class="block text-sm font-medium text-gray-700">ブランド</label>
+                                            <label for="brand" class="block my-1 text-sm font-medium text-gray-700">ブランド</label>
+                                            <div v-if="errors.brand_id" class="my-1 text-xs font-medium text-red-500">ブランドを選択してください</div>
                                             <select v-model="form.brand_id" name="brand" class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
                                                 <option v-for="brand in brands" :key="brand.name" :value="brand.id">{{ brand.name }}</option>
                                             </select>
                                         </div>
                                   
                                         <div class="">
-                                            <label for="price" class="block text-sm font-medium text-gray-700">価格</label>
+                                            <label for="price" class="block my-1 text-sm font-medium text-gray-700">価格</label>
+                                            <div v-if="errors.price" class="my-1 text-xs font-medium text-red-500">価格を入力してください</div>
                                             <input v-model="form.price" type="number" name="price" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                         </div>
                                         
                                         <div class="">
-                                            <label for="possessioned" class="block text-sm font-medium text-gray-700">所持中?</label>
-                                            <select v-model="form.possessioned" name="possessioned" class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
+                                            <label for="state" class="block my-1 text-sm font-medium text-gray-700">所持中?</label>
+                                            <div v-if="errors.state" class="my-1 text-xs font-medium text-red-500">選択してください</div>
+                                            <select v-model="form.state" name="state" class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
                                                 <option :value="true">所持品</option>
                                                 <option :value="false">購入検討中</option>
                                             </select>
                                         </div>
                                         
                                         <div class="">
-                                            <label for="product_description" class="block text-sm font-medium text-gray-700">説明</label>
+                                            <label for="product_description" class="block my-1 text-sm font-medium text-gray-700">説明</label>
+                                            <div v-if="errors.description" class="my-1 text-xs font-medium text-red-500">説明を入力してください</div>
                                             <input v-model="form.description" type="text" name="description" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                         </div>
                                     </div>
@@ -381,7 +392,7 @@ function showOutfits () {
                                 <div class="bg-white px-4 py-5 sm:p-6">
                                     <div class="">
                                         <div class="">
-                                            <div class="flex justify-start items-center">
+                                            <div class="flex justify-start items-center my-1">
                                                 <label class="block text-sm font-medium text-gray-700">写真</label>
                                                 <input @change="uploadFile" name="file-upload" type="file" class="block w-80 mx-2 text-sm font-medium text-slate-500
                                                     file:mr-4 file:py-2 file:px-4
@@ -391,52 +402,70 @@ function showOutfits () {
                                                     hover:file:bg-violet-100
                                                 "/>
                                             </div>
+                                            <div v-if="errors.file" class="my-1 text-xs font-medium text-red-500">写真を選択してください</div>
+                                            
                                             <div class="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 ">
-                                                <img :src="selectedItem.image_url" class="h-full w-full object-cover object-center">
+                                                <div v-if="previewSrc != null">
+                                                    <img :src="previewSrc" class="h-full w-full object-cover object-center">
+                                                </div>
+                                                <div v-else>
+                                                    <div class="space-y-1 text-center">
+                                                        <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                        </svg>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                 
                                         <div class="">
-                                            <label for="product_name" class="block text-sm font-medium text-gray-700">商品名</label>
+                                            <label for="product_name" class="block my-1 text-sm font-medium text-gray-700">商品名</label>
+                                            <div v-if="errors.name" class="my-1 text-xs font-medium text-red-500">商品名を入力してください</div>
                                             <input v-model="form.name" type="text" name="street-address" :value="form.name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                         </div>
                     
                                         <div class="">
-                                            <label for="type" class="block text-sm font-medium text-gray-700">タイプ</label>
+                                            <label for="type" class="block my-1 text-sm font-medium text-gray-700">タイプ</label>
+                                            <div v-if="errors.type_id" class="my-1 text-xs font-medium text-red-500">タイプを選択してください</div>
                                             <select v-model="form.type_id" name="type" class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
                                                 <option v-for="type in types" :key="type.name" :value="type.id">{{ type.name }}</option>
                                             </select>
                                         </div>
                                   
                                         <div class="">
-                                            <label for="categorie" class="block text-sm font-medium text-gray-700">カテゴリー</label>
+                                            <label for="categorie" class="block my-1 text-sm font-medium text-gray-700">カテゴリー</label>
+                                            <div v-if="errors.categorie_id" class="my-1 text-xs font-medium text-red-500">カテゴリーを選択してください</div>
                                             <select v-model="form.categorie_id" name="categorie" class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
                                               <option v-for="categorie in categories" :key="categorie.name" :value="categorie.id">{{ categorie.name }}</option>
                                             </select>
                                         </div>
                                   
                                         <div class="">
-                                            <label for="brand" class="block text-sm font-medium text-gray-700">ブランド</label>
+                                            <label for="brand" class="block my-1 text-sm font-medium text-gray-700">ブランド</label>
+                                            <div v-if="errors.brand_id" class="my-1 text-xs font-medium text-red-500">ブランドを選択してください</div>
                                             <select v-model="form.brand_id" name="brand" class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
                                                 <option v-for="brand in brands" :key="brand.name" :value="brand.id">{{ brand.name }}</option>
                                             </select>
                                         </div>
                                   
                                         <div class="">
-                                            <label for="price" class="block text-sm font-medium text-gray-700">価格</label>
+                                            <label for="price" class="block my-1 text-sm font-medium text-gray-700">価格</label>
+                                            <div v-if="errors.price" class="my-1 text-xs font-medium text-red-500">価格を入力してください</div>
                                             <input v-model="form.price" type="number" name="price" :value="form.price" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                         </div>
                                         
                                         <div class="">
-                                            <label for="possessioned" class="block text-sm font-medium text-gray-700">持ってる</label>
-                                            <select v-model="form.possessioned" name="possessioned" class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
+                                            <label for="state" class="block my-1 text-sm font-medium text-gray-700">持ってる</label>
+                                            <div v-if="errors.state" class="my-1 text-xs font-medium text-red-500">選択してください</div>
+                                            <select v-model="form.state" name="state" class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
                                                 <option :value="true">所持品</option>
                                                 <option :value="false">購入検討中</option>
                                             </select>
                                         </div>
                                         
                                         <div class="">
-                                            <label for="product_description" class="block text-sm font-medium text-gray-700">説明</label>
+                                            <label for="product_description" class="block my-1 text-sm font-medium text-gray-700">説明</label>
+                                            <div v-if="errors.description" class="my-1 text-xs font-medium text-red-500">説明を入力してください</div>
                                             <input v-model="form.description" type="text" name="description" :value="form.description" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                         </div>
                                     </div>

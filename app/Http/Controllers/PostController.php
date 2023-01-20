@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Models\User;
 use App\Models\Post;
 use App\Models\Image;
+use App\Http\Requests\PostRequest;
 
 class PostController extends Controller
 {
@@ -112,7 +113,7 @@ class PostController extends Controller
             ]);
     }
     
-    public function store(User $user, Request $request)
+    public function store(User $user, PostRequest $request)
     {
         $input = $request->all();
         $urls = $input['images'];
@@ -129,10 +130,11 @@ class PostController extends Controller
                 'image_url'=>$url
             ]);
         }
-
+        
+        return redirect('/myposts');
     }
     
-    public function update(Request $request, Post $post)
+    public function update(PostRequest $request, Post $post)
     {
         $input = $request->all();
         
@@ -173,6 +175,7 @@ class PostController extends Controller
         $post->favoritingUsers()->detach();
         $post->images()->delete();
         $post->delete();
+        
         return redirect('/myposts');
     }
 }
