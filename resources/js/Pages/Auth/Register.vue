@@ -24,7 +24,7 @@ const submit = () => {
 </script>
 
 <template>
-    <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
+    <div class="fixed top-0 right-0 px-6 py-4 block">
         <Link :href="route('login')" class="text-2xl text-white  underline">ログイン</Link>
     </div>
     <GuestLayout>

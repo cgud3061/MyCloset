@@ -4,7 +4,7 @@ import { Link } from '@inertiajs/inertia-vue3';
 </script>
 
 <template>
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-hero-img bg-cover">
+    <div class="min-h-screen flex flex-col justify-center items-center pt-6 pt-0 bg-hero-img bg-cover">
         <div>
             <Link href="/">
                 <img src="https://res.cloudinary.com/dxe6weecx/image/upload/v1673686725/logo_e29jid.png" class="block h-20 w-20">
