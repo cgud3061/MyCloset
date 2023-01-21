@@ -57,13 +57,15 @@ class PostController extends Controller
             $recomended_user_id = array_unique($recomended_user_id);
             // ユーザー本人のidを削除
             $recomended_user_id = array_diff($recomended_user_id, array($user->id));
+            // ユーザーがフォローしているユーザーのidを削除
+            $recomended_user_id = array_diff($recomended_user_id, $followee_id);
             // 削除した分の空白を詰める
             $recomended_user_id = array_values($recomended_user_id);
-            
+
             $post = Post::whereIn('user_id', $recomended_user_id)->with('images', 'user')->get();
 
             if ($recomended_user_id == []) {
-                $post = Post::where('user_id', '!=', $user->id)->orderBy('created_at', 'DESC')->limit(20)->with('images', 'user')->get();
+                $post = Post::where('user_id', '!=', $user->id)->whereNotIn('user_id', $followee_id)->orderBy('created_at', 'DESC')->limit(20)->with('images', 'user')->get();
             }
 
         }
