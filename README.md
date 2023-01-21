@@ -9,7 +9,7 @@
 
 - 登録済みのアイテムからコーディネートを作成しタイムラインに投稿できます．
 
-![](https://user-images.githubusercontent.com/110981946/213859843-cd9a1e56-6eb3-4913-8a3e-90fc53b12509.png)
+![](https://user-images.githubusercontent.com/110981946/213868256-bc790adb-6df2-47c7-a184-0c7ee3c0bda4.png)
 
 ## URL
 [https://fathomless-temple-39207.herokuapp.com/](https://fathomless-temple-39207.herokuapp.com/)
@@ -59,3 +59,10 @@
 - Swiper 8.4.5
 - Font Awesome 6.2.1
 - AWS
+
+#### サンプル画像引用元
+[ユニクロ公式オンラインストア][https://www.uniqlo.com/jp/ja/]  
+[GU公式 ファッション通販サイト][https://www.gu-global.com/jp/ja/]  
+[公式ギャップ通販サイト][https://www.gap.co.jp/]  
+[H&M Japan][https://www2.hm.com/ja_jp/index.html]  
+[ZARA Japan][https://www.zara.com/jp/]
