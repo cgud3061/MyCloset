@@ -47,10 +47,7 @@ defineProps({
                     <h1 class="text-xl text-white bg-black bg-opacity-70 rounded p-2 font-medium mx-3 my-2">自分のコーディネートに自信がない...</h1>
                 </div>
                 <div class="flex justify-center w-full">
-                    <h1 class="text-xl text-white bg-black bg-opacity-70 rounded p-2 font-medium mx-3 mb-2">マイクロは洋服管理機能とコーディネート投稿機能で</h1>
-                </div>
-                <div class="flex justify-center w-full">
-                    <h1 class="text-xl text-white bg-black bg-opacity-70 rounded p-2 font-medium mx-3 mb-2">そんなあなたのお悩みを解決します！</h1>
+                    <h1 class="text-xl text-white bg-black bg-opacity-70 rounded p-2 font-medium mx-3 mb-2">マイクロは洋服管理機能とコーディネート投稿機能でそんなあなたのお悩みを解決します!</h1>
                 </div>
             </div>
         </div>
