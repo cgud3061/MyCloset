@@ -1,66 +1,61 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## アプリケーション名
+### 「マイクロ」
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## アプリケーション概要
+洋服管理とコーディネート投稿ができるwebアプリケーションです．  
+- マイクローゼットページに，所有する洋服（アイテム）を登録し管理できます．
 
-## About Laravel
+![](https://user-images.githubusercontent.com/110981946/213859843-cd9a1e56-6eb3-4913-8a3e-90fc53b12509.png)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- 登録済みのアイテムからコーディネートを作成しタイムラインに投稿できます．
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+![](https://user-images.githubusercontent.com/110981946/213859843-cd9a1e56-6eb3-4913-8a3e-90fc53b12509.png)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## URL
+[https://fathomless-temple-39207.herokuapp.com/](https://fathomless-temple-39207.herokuapp.com/)
 
-## Learning Laravel
+## テスト用アカウント
+- メールアドレス : User1@mail
+- パスワード : User1@mail
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 目指した課題解決
+#### 課題1 : 買い物の失敗を減らす  
+クローゼットにどんなアイテムがあるか把握することで，自分の好みや必要な服も把握することができ，買い物の失敗を減らす．
+#### 課題2 : コーディネートの失敗を減らす  
+コーディネートをタイムラインに投稿し，他のユーザーから評価してもらうことで，自分のコーディネートが人からどんな評価を受けるのか事前に確かめることができ，コーディネートの失敗を減らす．
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## 要件定義
+|優先順位<br>(高:3 中:2  低:1)|機能|目的|詳細|
+|-|-|-|-|
+|3|DB設計|アプリ制作の全体像を把握するために必要テーブルを洗い出す|[https://user-images.githubusercontent.com/110981946/213863159-7825220b-7264-47aa-9f97-8b140fc86d7c.png](https://user-images.githubusercontent.com/110981946/213863159-7825220b-7264-47aa-9f97-8b140fc86d7c.png)|
+|3|ユーザー管理機能|ユーザー毎のマイページを利用可能にする|トップページ上部にログイン，新規登録ボタンを設けユーザーを識別する|
+|3|記事投稿関連|アイテムの追加やコーディネートの作成を可能にする|マイクローゼットページにてアイテムの追加やコーディネートの作成，　一覧＆詳細表示，編集，削除を行える|
+|3|画像アップロード機能|アイテムに画像を紐づけることで所有するアイテムを視覚的に把握しやすくする|アイテム追加時にアイテムの画像も登録する|
+|2|いいね機能|コーディネートに対する評価を受けられるようにする|タイムラインページの各投稿に設けられたハートボタンからいいねを行う|
+|2|フォロー機能|洋服の好みの近いユーザーをフォローすることでコーディネートの参考にできる|他ユーザーのマイクローゼットページにてフォローやアンフォローを行う|
+|2|おすすめ機能|洋服の好みの近いユーザーを発見することができる|タイムラインのおすすめボタンを押すとおすすめ投稿が表示される|
+|2|リレーション|アイテムに属性を付与する|アイテム追加時にカテゴリーやブランドなどの情報を登録する|
+|1|ポップアップ表示機能|ページ遷移を減らす|投稿詳細や作成，編集はポップアップされたモーダルから行える|
+|1|スワイプ機能|タッチパネルにおける操作性の向上|コーディネート詳細にて複数の画像をスワイプによって閲覧可能|
+|1|コメント機能|コーディネートへのより詳細な評価を可能にする|タイムラインの投稿詳細から投稿にコメントを追加する|
+|1|条件検索機能|所有するアイテムの傾向の把握に役立てる|マイクローゼットページにて所有アイテムをカテゴリーやブランドで絞り込み表示する|
+|1|ハッシュタグ機能|洋服の好みの近いユーザーをつなげる|コーディネート作成時にハッシュタグを付与する|
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+#### 上記未実装項目（今後実装予定です）
+- コメント機能  
+- 条件検索機能  
+- ハッシュタグ機能
 
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 使用技術
+- PHP 8.0.24
+- Laravel 9.40.1
+- Vue 3.2.41
+- MySQL 15.1
+- Breeze 1.15.2
+- Tailwind 3.2.4
+- Cloudinary 2.0
+- Inertia 0.6.3
+- Axios 1.2.1
+- Swiper 8.4.5
+- Font Awesome 6.2.1
+- AWS
