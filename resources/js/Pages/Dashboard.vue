@@ -121,9 +121,9 @@ function recomend () {
                     <!-- 洋服要素 -->
                     <div v-for="(post, index) in posts" :key="post.name" class="group relative">
                         <!-- 写真要素 -->
-                        <div class="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none lg:h-80">
+                        <button @click="openDescription(post)" type="button" class="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none lg:h-80">
                             <img :src="post.images[0].image_url" class="h-full w-full object-cover object-center lg:h-full lg:w-full">
-                        </div>
+                        </button>
                         <!-- 商品名など -->
                         <div class="mt-1 flex">
                             <div v-if="post.user.profile_image_url" class="reactive w-1/4">
