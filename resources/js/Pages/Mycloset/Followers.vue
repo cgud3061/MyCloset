@@ -35,9 +35,9 @@ function toMyPage (userId) {
                         <li v-for="follower in followers" class="flex flex-row">
                             <div class="flex items-center flex-1 p-4 cursor-pointer select-none">
                                 <div v-if="follower.profile_image_url != null" class="flex flex-col items-center justify-center w-10 h-10 mr-4">
-                                    <a href="#" class="relative block">
+                                    <button @click="toMyPage(follower.id)" type="button" href="#" class="relative block">
                                         <img alt="profil" :src="follower.profile_image_url" class="mx-auto object-cover rounded-full h-10 w-10 "/>
-                                    </a>
+                                    </button>
                                 </div>
                                 <div v-else class="flex items-ceter justify-ceter w-14 h-14 mr-4">
                                     <div class="flex justify-center items-center aspect-square w-full m-2 rounded-full ring-2 ring-gray-200">

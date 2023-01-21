@@ -126,9 +126,18 @@ function recomend () {
                         </div>
                         <!-- 商品名など -->
                         <div class="mt-1 flex">
-                            <div class="reactive w-1/4">
-                                <img :src="post.user.profile_image_url" class="absolute z-0 w-10 h-10 rounded-full m-2 ring-2 ring-gray-200">
-                                <button @click="toMyPage(post.user.id)" class="absolute z-10 w-10 h-10 rounded-full m-2 ring-2 ring-gray-200"></button>
+                            <div v-if="post.user.profile_image_url" class="reactive w-1/4">
+                                <div class="w-full h-full">
+                                    <img :src="post.user.profile_image_url" class="absolute z-0 w-10 h-10 rounded-full m-2 ring-2 ring-gray-200">
+                                    <button @click="toMyPage(post.user.id)" class="absolute z-10 w-10 h-10 rounded-full m-2 ring-2 ring-gray-200"></button>
+                                </div>
+                            </div>
+                            <div v-else class="w-1/4">
+                                <div class="flex justify-center items-center w-full h-full">
+                                    <div class="flex justify-center items-center aspect-square w-10 h-10 m-1 rounded-full ring-2 ring-gray-200">
+                                        <FontAwesomeIcon @click="toMyPage(post.user.id)" icon="user" class="w-2/3 h-2/3"></FontAwesomeIcon>
+                                    </div>
+                                </div>
                             </div>
                             <div class="relative w-2/4">
                                 <h2 class="mt-2 text-sm text-gray-600">{{ post.user.name }}</h2>
